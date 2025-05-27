@@ -1,5 +1,3 @@
-// src/app/api/chat/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
@@ -14,7 +12,8 @@ export async function POST(req: NextRequest) {
     }
 
     return NextResponse.json({ message: `Otto received: ${message}` });
-  } catch (error) {
+  } catch {
+    // We’re not using the error variable, so we avoid declaring it
     return NextResponse.json(
       { error: "Something went wrong." },
       { status: 500 }
