@@ -1,6 +1,7 @@
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 import { NextRequest, NextResponse } from "next/server";
 
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export async function POST(req: NextRequest) {
-  console.log("✅ Otto's chat route hit");
-  return NextResponse.json({ message: "💬 Otto is alive (nested route working)" });
+  return NextResponse.json({ message: "💬 Otto is alive (route working!)" });
 }
