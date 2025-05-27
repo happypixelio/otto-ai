@@ -7,11 +7,19 @@ const openai = new OpenAI({
 });
 
 export async function POST(req: NextRequest) {
+  console.log("📨 /api/chat POST endpoint hit"); // Debug: Function was triggered
+
   const { message } = await req.json();
 
   if (!message) {
+    console.log("⚠️ No message in request body");
     return NextResponse.json({ error: "No message provided." }, { status: 400 });
   }
+
+  console.log("✅ Received message:", message);
+
+  const openaiKeyPresent = !!process.env.OPENAI_API_KEY;
+  console.log("🔑 OPENAI_API_KEY present:", openaiKeyPresent);
 
   try {
     const latestProject = portfolioData.projects.find(p => p.latest);
@@ -55,14 +63,13 @@ ${portfolioData.projects.map(p => `- ${p.title}: ${p.summary} (Link: ${p.url})`)
 
     return NextResponse.json({ message: reply });
 
-} catch (error: unknown) {
-  let errorMsg = "GPT call failed.";
-  if (error && typeof error === "object" && "message" in error) {
-    errorMsg = (error as { message?: string }).message || errorMsg;
+  } catch (error: unknown) {
+    let errorMsg = "GPT call failed.";
+    if (error && typeof error === "object" && "message" in error) {
+      errorMsg = (error as { message?: string }).message || errorMsg;
+    }
+
+    console.error("🔥 GPT error:", error);
+    return NextResponse.json({ error: errorMsg }, { status: 500 });
   }
-
-  console.error("🔥 GPT error:", error);
-  return NextResponse.json({ error: errorMsg }, { status: 500 });
-}
-
 }
